@@ -33,15 +33,15 @@ import java.awt.geom.PathIterator
  */
 abstract class AbstractTesselatorVisitor : SimplePathVisitor() {
 	
-	protected val tesselator by lazy { GLU.gluNewTess() }
+	private val tesselator by lazy { GLU.gluNewTess() }
 	
-	protected var callback: GLUtessellatorCallback
+	private var callback: GLUtessellatorCallback
 	
 	/**
 	 * Last command was a move to. This is where drawing starts.
 	 */
-	protected var drawStart = CachedFloatArray(2)
-	protected var drawing = false
+	private var drawStart = CachedFloatArray(2)
+	private var drawing = false
 	
 	protected var drawMode: Int = 0
 	protected var vBuffer = VertexBuffer(1024)
@@ -60,7 +60,7 @@ abstract class AbstractTesselatorVisitor : SimplePathVisitor() {
 		GLU.gluTessBeginPolygon(tesselator, null)
 	}
 	
-	protected fun configureTesselator(windingRule: Int) {
+	private fun configureTesselator(windingRule: Int) {
 		when (windingRule) {
 			PathIterator.WIND_EVEN_ODD -> GLU.gluTessProperty(tesselator, GLU.GLU_TESS_WINDING_RULE, GLU.GLU_TESS_WINDING_ODD.toDouble())
 			
@@ -121,18 +121,18 @@ abstract class AbstractTesselatorVisitor : SimplePathVisitor() {
 		}
 	}
 	
-	protected fun beginTess(type: Int) {
+	private fun beginTess(type: Int) {
 		drawMode = type
 		vBuffer.clear()
 	}
 	
-	protected fun addTessVertex(vertex: DoubleArray) {
+	private fun addTessVertex(vertex: DoubleArray) {
 		vBuffer.addVertex(vertex[0].toFloat(), vertex[1].toFloat())
 	}
 	
 	protected abstract fun endTess()
 	
-	protected inner class TessellatorCallback : GLUtessellatorCallbackAdapter() {
+	private inner class TessellatorCallback : GLUtessellatorCallbackAdapter() {
 		override fun begin(type: Int) {
 			beginTess(type)
 		}

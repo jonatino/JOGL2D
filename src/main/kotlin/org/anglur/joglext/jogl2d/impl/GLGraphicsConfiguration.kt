@@ -18,7 +18,6 @@ package org.anglur.joglext.jogl2d.impl
 
 import com.jogamp.opengl.GLDrawable
 import java.awt.GraphicsConfiguration
-import java.awt.GraphicsDevice
 import java.awt.Rectangle
 import java.awt.Transparency
 import java.awt.geom.AffineTransform
@@ -37,7 +36,11 @@ import java.awt.image.DirectColorModel
  * before being used.
  *
  */
-class GLGraphicsConfiguration(val target: GLDrawable) : GraphicsConfiguration() {
+object GLGraphicsConfiguration : GraphicsConfiguration() {
+	
+	lateinit var target: GLDrawable
+	
+	fun setDrawable(target: GLDrawable) = apply { this.target = target }
 	
 	private val device: GLGraphicsDevice
 	
@@ -45,22 +48,17 @@ class GLGraphicsConfiguration(val target: GLDrawable) : GraphicsConfiguration() 
 		device = GLGraphicsDevice(this)
 	}
 	
-	override fun getDevice(): GraphicsDevice {
-		return device
-	}
+	override fun getDevice() = device
 	
-	override fun createCompatibleImage(width: Int, height: Int): BufferedImage {
-		return BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
-	}
+	override fun createCompatibleImage(width: Int, height: Int) =
+			BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 	
 	/*
 	 * Any reasonable {@code ColorModel} can be transformed into a texture we can
 	 * render in OpenGL. I'm not worried about creating an exactly correct one
 	 * right now.
 	 */
-	override fun getColorModel(): ColorModel {
-		return ColorModel.getRGBdefault()
-	}
+	override fun getColorModel() = ColorModel.getRGBdefault()
 	
 	override fun getColorModel(transparency: Int): ColorModel? {
 		when (transparency) {
@@ -70,15 +68,10 @@ class GLGraphicsConfiguration(val target: GLDrawable) : GraphicsConfiguration() 
 		}
 	}
 	
-	override fun getDefaultTransform(): AffineTransform {
-		return AffineTransform()
-	}
+	override fun getDefaultTransform() = AffineTransform()
 	
-	override fun getNormalizingTransform(): AffineTransform {
-		return AffineTransform()
-	}
+	override fun getNormalizingTransform() = AffineTransform()
 	
-	override fun getBounds(): Rectangle {
-		return Rectangle(target.surfaceWidth, target.surfaceHeight)
-	}
+	override fun getBounds() = Rectangle(target.surfaceWidth, target.surfaceHeight)
+	
 }

@@ -31,13 +31,15 @@ abstract class AbstractTextDrawer : GLG2DTextHelper {
 	
 	protected lateinit var g2d: GLGraphics2D
 	
-	protected var stack: Deque<FontState> = ArrayDeque()
+	private var stack: Deque<FontState> = ArrayDeque()
+	
+	private val EMPTY = FontState()
 	
 	override fun setG2D(g2d: GLGraphics2D) {
 		this.g2d = g2d
 		
 		stack.clear()
-		stack.push(FontState())
+		stack.push(EMPTY.reset())
 	}
 	
 	override fun push(newG2d: GLGraphics2D) {
@@ -94,7 +96,7 @@ abstract class AbstractTextDrawer : GLG2DTextHelper {
 		}
 	}
 	
-	protected class FontState : Cloneable {
+	private class FontState : Cloneable {
 		var font: Font? = null
 		var antiAlias: Boolean = false
 		
@@ -106,5 +108,11 @@ abstract class AbstractTextDrawer : GLG2DTextHelper {
 			}
 			
 		}
+		
+		fun reset() = apply {
+			font = null
+			antiAlias = false
+		}
+		
 	}
 }

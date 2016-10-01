@@ -26,6 +26,7 @@ import java.awt.image.RenderedImage
 import java.awt.image.renderable.RenderableImage
 
 interface GLG2DImageHelper : G2DDrawingHelper {
+	
 	fun drawImage(img: Image, x: Int, y: Int, bgcolor: Color, observer: ImageObserver): Boolean
 	
 	fun drawImage(img: Image, xform: AffineTransform, observer: ImageObserver): Boolean

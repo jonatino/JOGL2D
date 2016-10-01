@@ -40,17 +40,16 @@ object ArcIterator : PathIterator {
 	fun set(a: Arc2D, affine: AffineTransform?) = apply {
 		this.index = 0
 		this.a = a
-		this.w = a.getWidth() / 2
-		this.h = a.getHeight() / 2
-		this.x = a.getX() + w
-		this.y = a.getY() + h
-		this.angStRad = -Math.toRadians(a.getAngleStart())
+		this.w = a.width / 2
+		this.h = a.height / 2
+		this.x = a.x + w
+		this.y = a.y + h
+		this.angStRad = -Math.toRadians(a.angleStart)
 		this.affine = affine
-		val ext = -a.getAngleExtent()
+		val ext = -a.angleExtent
 		if (ext >= 360.0 || ext <= -360) {
 			arcSegs = 4
 			this.increment = Math.PI / 2
-			// btan(Math.PI / 2);
 			this.cv = 0.5522847498307933
 			if (ext < 0) {
 				increment = -increment
@@ -64,7 +63,7 @@ object ArcIterator : PathIterator {
 				arcSegs = 0
 			}
 		}
-		when (a.getArcType()) {
+		when (a.arcType) {
 			Arc2D.OPEN -> lineSegs = 0
 			Arc2D.CHORD -> lineSegs = 1
 			Arc2D.PIE -> lineSegs = 2
@@ -123,7 +122,7 @@ object ArcIterator : PathIterator {
 	 * @see #SEG_CLOSE
 	 */
 	override fun currentSegment(coords: FloatArray): Int {
-		if (isDone()) {
+		if (isDone) {
 			throw NoSuchElementException("arc iterator out of bounds")
 		}
 		var angle = angStRad

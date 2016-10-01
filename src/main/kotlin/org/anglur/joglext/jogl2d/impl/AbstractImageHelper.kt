@@ -40,8 +40,8 @@ abstract class AbstractImageHelper : GLG2DImageHelper {
 	/**
 	 * See [GLG2DRenderingHints.KEY_CLEAR_TEXTURES_CACHE]
 	 */
-	protected var imageCache = TextureCache()
-	protected var clearCachePolicy: Any? = null
+	private var imageCache = TextureCache()
+	private var clearCachePolicy: Any? = null
 	
 	protected lateinit var g2d: GLGraphics2D
 	
@@ -116,7 +116,7 @@ abstract class AbstractImageHelper : GLG2DImageHelper {
 		return true
 	}
 	
-	protected fun drawImage(img: Image, xform: AffineTransform, color: Color, observer: ImageObserver): Boolean {
+	private fun drawImage(img: Image, xform: AffineTransform, color: Color, observer: ImageObserver): Boolean {
 		val texture = getTexture(img, observer) ?: return false
 		
 		begin(texture, xform, color)
@@ -126,7 +126,7 @@ abstract class AbstractImageHelper : GLG2DImageHelper {
 		return true
 	}
 	
-	protected fun applyTexture(texture: Texture) {
+	private fun applyTexture(texture: Texture) {
 		val width = texture.width
 		val height = texture.height
 		val coords = texture.imageTexCoords
@@ -150,7 +150,7 @@ abstract class AbstractImageHelper : GLG2DImageHelper {
 	 * anything in the image to a BufferedImage.
 	 *
 	 */
-	protected fun getTexture(image: Image, observer: ImageObserver): Texture? {
+	private fun getTexture(image: Image, observer: ImageObserver): Texture? {
 		var texture: Texture? = imageCache[image]
 		if (texture == null) {
 			val bufferedImage: BufferedImage?
@@ -169,16 +169,16 @@ abstract class AbstractImageHelper : GLG2DImageHelper {
 		return texture
 	}
 	
-	protected fun create(image: BufferedImage): Texture {
+	private fun create(image: BufferedImage): Texture {
 		// we'll assume the image is complete and can be rendered
-		return AWTTextureIO.newTexture(g2d.glContext.getGL().getGLProfile(), image, false)
+		return AWTTextureIO.newTexture(g2d.glContext.gl.glProfile, image, false)
 	}
 	
-	protected fun destroy(texture: Texture) {
-		texture.destroy(g2d.glContext.getGL())
+	private fun destroy(texture: Texture) {
+		texture.destroy(g2d.glContext.gl)
 	}
 	
-	protected fun addToCache(image: Image, texture: Texture) {
+	private fun addToCache(image: Image, texture: Texture) {
 		if (clearCachePolicy is Number) {
 			val maxSize = (clearCachePolicy as Number).toInt()
 			if (imageCache.size > maxSize) {
@@ -193,7 +193,7 @@ abstract class AbstractImageHelper : GLG2DImageHelper {
 		imageCache.put(image, texture)
 	}
 	
-	protected fun toBufferedImage(image: Image): BufferedImage? {
+	private fun toBufferedImage(image: Image): BufferedImage? {
 		if (image is VolatileImage) {
 			return image.snapshot
 		}
@@ -226,7 +226,7 @@ abstract class AbstractImageHelper : GLG2DImageHelper {
 	 * so we can dispose the Textures when the Image is no longer referenced.
 	 */
 	@SuppressWarnings("serial")
-	protected inner class TextureCache : HashMap<WeakKey<Image>, Texture>() {
+	private inner class TextureCache : HashMap<WeakKey<Image>, Texture>() {
 		private val queue = ReferenceQueue<Image>()
 		
 		fun expungeStaleEntries() {
@@ -254,7 +254,7 @@ abstract class AbstractImageHelper : GLG2DImageHelper {
 		}
 	}
 	
-	protected class WeakKey<T>(value: T, queue: ReferenceQueue<T>?) : WeakReference<T>(value, queue) {
+	private class WeakKey<T>(value: T, queue: ReferenceQueue<T>?) : WeakReference<T>(value, queue) {
 		private val hash: Int
 		
 		init {

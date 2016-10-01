@@ -22,7 +22,8 @@ import com.jogamp.opengl.GL2
 import org.anglur.joglext.jogl2d.impl.AbstractTesselatorVisitor
 
 class GL2TesselatorVisitor : AbstractTesselatorVisitor() {
-	protected lateinit var gl: GL2
+	
+	private lateinit var gl: GL2
 	
 	override fun setGLContext(context: GL) {
 		gl = context.gL2
@@ -31,4 +32,5 @@ class GL2TesselatorVisitor : AbstractTesselatorVisitor() {
 	override fun endTess() {
 		vBuffer.drawBuffer(gl, drawMode)
 	}
+	
 }

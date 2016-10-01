@@ -18,34 +18,24 @@ package org.anglur.joglext.jogl2d
 
 import com.jogamp.opengl.GL
 import com.jogamp.opengl.GL2ES1
+import org.anglur.joglext.cacheable.CachedIntArray
 import java.awt.Color
-import java.util.logging.Level
-import java.util.logging.Logger
 
 object GLG2DUtils {
-	private val LOGGER = Logger.getLogger(GLG2DUtils::class.java.name)
 	
 	fun setColor(gl: GL2ES1, c: Color, preMultiplyAlpha: Float) {
 		val rgb = c.rgb
 		gl.glColor4ub((rgb shr 16 and 0xFF).toByte(), (rgb shr 8 and 0xFF).toByte(), (rgb and 0xFF).toByte(), ((rgb shr 24 and 0xFF) * preMultiplyAlpha).toByte())
 	}
 	
-	fun getGLColor(c: Color): FloatArray {
-		return c.getComponents(null)
-	}
+	fun getGLColor(c: Color) = c.getComponents(null)
+	
+	private val viewportDimensions = CachedIntArray(4)
 	
 	fun getViewportHeight(gl: GL): Int {
-		val viewportDimensions = IntArray(4)
 		gl.glGetIntegerv(GL.GL_VIEWPORT, viewportDimensions, 0)
 		val canvasHeight = viewportDimensions[3]
 		return canvasHeight
-	}
-	
-	fun logGLError(gl: GL) {
-		val error = gl.glGetError()
-		if (error != GL.GL_NO_ERROR) {
-			LOGGER.log(Level.SEVERE, "GL Error: code " + error)
-		}
 	}
 	
 	fun ensureIsGLBuffer(gl: GL, bufferId: Int): Int {
@@ -56,8 +46,9 @@ object GLG2DUtils {
 		}
 	}
 	
+	private val ids = CachedIntArray(1)
+	
 	fun genBufferId(gl: GL): Int {
-		val ids = IntArray(1)
 		gl.glGenBuffers(1, ids, 0)
 		return ids[0]
 	}

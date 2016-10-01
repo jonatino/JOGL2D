@@ -14,26 +14,24 @@
  *    limitations under the License.
  */
 
-package org.anglur.joglext.jogl2d
+package org.anglur.joglext.cacheable
 
-import java.awt.geom.AffineTransform
+import java.util.*
 
-interface GLG2DTransformHelper : G2DDrawingHelper {
+object CachedIntArray {
 	
-	var transform: AffineTransform
+	/**
+	 * The resource map cache, mapping size in bytes to memory.
+	 */
+	private val map = ThreadLocal.withInitial { HashMap<Int, IntArray?>(32) }
 	
-	fun translate(x: Int, y: Int)
+	/**
+	 * Returns a zeroed-out FloatArray of the specified size in bytes.
+	 *
+	 * @param size The desired amount of bytes of the FloatArray.
+	 */
+	fun cached(size: Int) = map.get().getOrPut(size, { IntArray(size) })!!
 	
-	fun translate(tx: Double, ty: Double)
-	
-	fun rotate(theta: Double)
-	
-	fun rotate(theta: Double, x: Double, y: Double)
-	
-	fun scale(sx: Double, sy: Double)
-	
-	fun shear(shx: Double, shy: Double)
-	
-	fun transform(Tx: AffineTransform)
+	operator fun invoke(size: Int) = cached(size)
 	
 }

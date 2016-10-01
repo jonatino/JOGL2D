@@ -28,15 +28,16 @@ interface GLG2DColorHelper : G2DDrawingHelper {
 	
 	var color: Color
 	
+	var background: Color
+	
 	fun setColorNoRespectComposite(c: Color)
 	
 	fun setColorRespectComposite(c: Color)
-	
-	var background: Color
 	
 	fun setPaintMode()
 	
 	fun setXORMode(c: Color)
 	
 	fun copyArea(x: Int, y: Int, width: Int, height: Int, dx: Int, dy: Int)
+	
 }

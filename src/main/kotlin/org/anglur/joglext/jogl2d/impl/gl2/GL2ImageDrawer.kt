@@ -26,32 +26,28 @@ import java.awt.Color
 import java.awt.geom.AffineTransform
 
 class GL2ImageDrawer : AbstractImageHelper() {
-	protected lateinit var gl: GL2
 	
-	protected var savedTransform: AffineTransform? = null
+	private lateinit var gl: GL2
+	
+	private var savedTransform: AffineTransform? = null
 	
 	override fun setG2D(g2d: GLGraphics2D) {
 		super.setG2D(g2d)
-		gl = g2d.glContext.getGL().getGL2()
+		gl = g2d.glContext.gl.gL2
 	}
 	
 	override fun begin(texture: Texture, xform: AffineTransform?, bgcolor: Color) {
 		gl.glTexEnvi(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_TEXTURE_ENV_MODE, GL2ES1.GL_MODULATE)
 		gl.glTexParameterf(GL2ES1.GL_TEXTURE_ENV, GL2ES1.GL_TEXTURE_ENV_MODE, GL.GL_BLEND.toFloat())
 		
-		/*
-     * FIXME This is unexpected since we never disable blending, but in some
-     * cases it interacts poorly with multiple split panes, scroll panes and the
-     * text renderer to disable blending.
-     */
-		g2d.setComposite(g2d.getComposite())
+		g2d.composite = g2d.composite
 		
 		texture.enable(gl)
 		texture.bind(gl)
 		
 		savedTransform = null
 		if (xform != null && !xform.isIdentity) {
-			savedTransform = g2d.getTransform()
+			savedTransform = g2d.transform
 			g2d.transform(xform)
 		}
 		
@@ -85,4 +81,5 @@ class GL2ImageDrawer : AbstractImageHelper() {
 		
 		gl.glEnd()
 	}
+	
 }

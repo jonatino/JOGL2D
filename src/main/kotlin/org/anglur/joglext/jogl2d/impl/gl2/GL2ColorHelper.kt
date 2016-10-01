@@ -24,7 +24,7 @@ import java.awt.*
 
 class GL2ColorHelper : AbstractColorHelper() {
 	
-	protected lateinit var gl: GL2
+	private lateinit var gl: GL2
 	
 	override fun setG2D(g2d: GLGraphics2D) {
 		super.setG2D(g2d)

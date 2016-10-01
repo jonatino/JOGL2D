@@ -24,6 +24,7 @@ import java.awt.RenderingHints
  * or shape drawing.
  */
 interface G2DDrawingHelper {
+	
 	/**
 	 * Sets the current `GLGraphics2D` parent. The current `GL` and
 	 * `GLContext` objects can be accessed from this. This should clear all

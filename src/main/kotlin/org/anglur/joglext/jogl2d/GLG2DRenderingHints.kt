@@ -22,6 +22,7 @@ import java.awt.RenderingHints.Key
  * Rendering hints for the GLG2D library that customize the behavior.
  */
 object GLG2DRenderingHints {
+	
 	private var keyId = 384739478
 	
 	/**
@@ -61,4 +62,5 @@ object GLG2DRenderingHints {
 					`val` is Int
 		}
 	}
+	
 }

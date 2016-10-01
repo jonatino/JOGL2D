@@ -30,7 +30,8 @@ import java.awt.BasicStroke
  * of quads for each line segment, joins corners and endpoints as appropriate.
  */
 class LineDrawingVisitor : BasicStrokeLineVisitor() {
-	protected lateinit var gl: GL2
+	
+	private lateinit var gl: GL2
 	
 	override fun setGLContext(context: GL) {
 		gl = context.gL2
@@ -54,7 +55,7 @@ class LineDrawingVisitor : BasicStrokeLineVisitor() {
 		gl.glPopMatrix()
 	}
 	
-	override fun drawBuffer() {
-		vBuffer.drawBuffer(gl, GL.GL_TRIANGLE_STRIP)
-	}
+	override fun drawBuffer() =
+			vBuffer.drawBuffer(gl, GL.GL_TRIANGLE_STRIP)
+	
 }

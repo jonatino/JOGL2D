@@ -32,19 +32,21 @@ import java.util.*
 
 abstract class AbstractShapeHelper : GLG2DShapeHelper {
 	
-	protected var strokeStack: Deque<Stroke> = ArrayDeque()
+	private var strokeStack: Deque<Stroke> = ArrayDeque()
 	
 	init {
 		strokeStack.push(BasicStroke())
 	}
 	
+	private val EMPTY = BasicStroke()
+	
 	override fun setG2D(g2d: GLGraphics2D) {
 		strokeStack.clear()
-		strokeStack.push(BasicStroke())
+		strokeStack.push(EMPTY)
 	}
 	
 	override fun push(newG2d: GLGraphics2D) {
-		strokeStack.push(newG2d.getStroke())
+		strokeStack.push(newG2d.stroke)
 	}
 	
 	override fun pop(parentG2d: GLGraphics2D) {
@@ -119,7 +121,7 @@ abstract class AbstractShapeHelper : GLG2DShapeHelper {
 		drawPoly(xPoints, yPoints, nPoints, fill, true)
 	}
 	
-	protected fun drawPoly(xPoints: IntArray, yPoints: IntArray, nPoints: Int, fill: Boolean, close: Boolean) {
+	private fun drawPoly(xPoints: IntArray, yPoints: IntArray, nPoints: Int, fill: Boolean, close: Boolean) {
 		val path = Path2D.Float(PathIterator.WIND_NON_ZERO, nPoints)
 		path.moveTo(xPoints[0].toFloat(), yPoints[0].toFloat())
 		for (i in 1..nPoints - 1) {
@@ -158,11 +160,11 @@ abstract class AbstractShapeHelper : GLG2DShapeHelper {
 		/**
 		 * We know this is single-threaded, so we can use these as archetypes.
 		 */
-		protected val ELLIPSE = Ellipse2D.Float()
-		protected val ROUND_RECT = RoundRectangle2D.Float()
-		protected val ARC = Arc2D.Float()
-		protected val RECT = Rectangle2D.Float()
-		protected val LINE = Line2D.Float()
+		private val ELLIPSE = Ellipse2D.Float()
+		private val ROUND_RECT = RoundRectangle2D.Float()
+		private val ARC = Arc2D.Float()
+		private val RECT = Rectangle2D.Float()
+		private val LINE = Line2D.Float()
 		
 		fun visitShape(shape: Shape, visitor: PathVisitor) {
 			val iterator = ShapeIterator.get(shape)

@@ -85,12 +85,12 @@ object LineIterator : PathIterator {
 		}
 		val type: Int
 		if (index === 0) {
-			coords[0] = line.getX1().toFloat()
-			coords[1] = line.getY1().toFloat()
+			coords[0] = line.x1.toFloat()
+			coords[1] = line.y1.toFloat()
 			type = PathIterator.SEG_MOVETO
 		} else {
-			coords[0] = line.getX2().toFloat()
-			coords[1] = line.getY2().toFloat()
+			coords[0] = line.x2.toFloat()
+			coords[1] = line.y2.toFloat()
 			type = PathIterator.SEG_LINETO
 		}
 		affine?.transform(coords, 0, coords, 0, 1)
@@ -122,12 +122,12 @@ object LineIterator : PathIterator {
 		}
 		val type: Int
 		if (index === 0) {
-			coords[0] = line.getX1()
-			coords[1] = line.getY1()
+			coords[0] = line.x1
+			coords[1] = line.y1
 			type = PathIterator.SEG_MOVETO
 		} else {
-			coords[0] = line.getX2()
-			coords[1] = line.getY2()
+			coords[0] = line.x2
+			coords[1] = line.y2
 			type = PathIterator.SEG_LINETO
 		}
 		affine?.transform(coords, 0, coords, 0, 1)

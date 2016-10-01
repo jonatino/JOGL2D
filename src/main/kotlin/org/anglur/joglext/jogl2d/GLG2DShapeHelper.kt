@@ -41,4 +41,5 @@ interface GLG2DShapeHelper : G2DDrawingHelper {
 	fun draw(shape: Shape)
 	
 	fun fill(shape: Shape)
+	
 }

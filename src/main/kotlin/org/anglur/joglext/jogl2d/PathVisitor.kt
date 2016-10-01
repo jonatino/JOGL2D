@@ -34,6 +34,7 @@ import java.awt.BasicStroke
  * @see java.awt.geom.PathIterator
  */
 interface PathVisitor {
+	
 	/**
 	 * Sets the GL context to be used for the next drawing session.
 	 
@@ -136,4 +137,5 @@ interface PathVisitor {
 	 * and there will be no more calls for this shape.
 	 */
 	fun endPoly()
+	
 }

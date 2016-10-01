@@ -28,9 +28,10 @@ import java.awt.BasicStroke
  * polygon is actually simple and convex.
  */
 class FillSimpleConvexPolygonVisitor : SimplePathVisitor() {
-	protected lateinit var gl: GL2
 	
-	protected var vBuffer = VertexBuffer.sharedBuffer
+	private lateinit var gl: GL2
+	
+	private var vBuffer = VertexBuffer.sharedBuffer
 	
 	override fun setGLContext(context: GL) {
 		gl = context.gL2
@@ -64,4 +65,5 @@ class FillSimpleConvexPolygonVisitor : SimplePathVisitor() {
 		vBuffer.clear()
 		vBuffer.addVertex(vertex, 0, 1)
 	}
+	
 }

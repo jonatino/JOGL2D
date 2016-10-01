@@ -27,15 +27,17 @@ import java.awt.RenderingHints.Key
 import java.util.*
 
 abstract class AbstractColorHelper : GLG2DColorHelper {
+	
 	protected lateinit var g2d: GLGraphics2D
 	
-	protected var stack: Deque<ColorState> = ArrayDeque()
+	private var stack: Deque<ColorState> = ArrayDeque()
 	
+	private val EMPTY = ColorState()
 	override fun setG2D(g2d: GLGraphics2D) {
 		this.g2d = g2d
 		
 		stack.clear()
-		stack.push(ColorState())
+		stack.push(EMPTY.reset())
 	}
 	
 	override fun push(newG2d: GLGraphics2D) = stack.push(stack.peek().clone())
@@ -112,7 +114,7 @@ abstract class AbstractColorHelper : GLG2DColorHelper {
 			stack.peek().paint = paint
 		}
 	
-	protected class ColorState : Cloneable {
+	private class ColorState : Cloneable {
 		var composite = AlphaComposite.SrcOver
 		var color = Color.WHITE
 		var paint: Paint? = null
@@ -126,7 +128,14 @@ abstract class AbstractColorHelper : GLG2DColorHelper {
 			}
 			
 		}
+		
+		fun reset() = apply {
+			composite = AlphaComposite.SrcOver
+			color = Color.WHITE
+			paint = null
+			background = Color.WHITE
+		}
+		
 	}
-	
 	
 }

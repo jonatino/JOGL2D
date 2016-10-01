@@ -20,26 +20,28 @@ import com.jogamp.opengl.GL
 import com.jogamp.opengl.GL2
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc
 import org.anglur.joglext.cacheable.CachedFloatArray
+import org.anglur.joglext.cacheable.CachedIntArray
 import org.anglur.joglext.jogl2d.GLGraphics2D
 import org.anglur.joglext.jogl2d.impl.AbstractMatrixHelper
 
 import java.awt.geom.AffineTransform
 
 class GL2Transformhelper : AbstractMatrixHelper() {
-	protected lateinit var gl: GL2
+	private lateinit var gl: GL2
 	
 	private val matrixBuf = CachedFloatArray(16)
 	
 	override fun setG2D(g2d: GLGraphics2D) {
 		super.setG2D(g2d)
-		gl = g2d.glContext.getGL().getGL2()
+		gl = g2d.glContext.gl.gL2
 		
 		setupGLView()
 		flushTransformToOpenGL()
 	}
 	
-	protected fun setupGLView() {
-		val viewportDimensions = IntArray(4)
+	val viewportDimensions = CachedIntArray(4)
+	
+	private fun setupGLView() {
 		gl.glGetIntegerv(GL.GL_VIEWPORT, viewportDimensions, 0)
 		val width = viewportDimensions[2]
 		val height = viewportDimensions[3]
@@ -72,7 +74,7 @@ class GL2Transformhelper : AbstractMatrixHelper() {
 	 * uses the lower-left as 0,0, we have to pre-multiply the matrix before
 	 * loading it onto the video card.
 	 */
-	protected fun getGLMatrix(transform: AffineTransform): FloatArray {
+	private fun getGLMatrix(transform: AffineTransform): FloatArray {
 		matrixBuf[0] = transform.scaleX.toFloat()
 		matrixBuf[1] = -transform.shearY.toFloat()
 		matrixBuf[4] = transform.shearX.toFloat()

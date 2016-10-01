@@ -48,48 +48,48 @@ import java.lang.Math.sqrt
  * from then on. For that reason, this class is a little messy.
  *
  */
-class SimpleOrTesselatingVisitor(protected var simpleFallback: PathVisitor, protected var tesselatorFallback: PathVisitor) : SimplePathVisitor() {
+class SimpleOrTesselatingVisitor(private var simpleFallback: PathVisitor, private var tesselatorFallback: PathVisitor) : SimplePathVisitor() {
 	/**
 	 * This buffer is used to store points for the simple polygon, until we find
 	 * out it's not simple. Then we push all this data to the tesselator and
 	 * ignore the buffer.
 	 */
-	protected var vBuffer = VertexBuffer(1024)
+	private var vBuffer = VertexBuffer(1024)
 	
 	/**
 	 * This is the buffer of vertices we'll use to test the corner.
 	 */
-	protected var previousVertices = CachedFloatArray(4)
-	protected var numberOfPreviousVertices: Int = 0
+	private var previousVertices = CachedFloatArray(4)
+	private var numberOfPreviousVertices: Int = 0
 	
 	/**
 	 * The total curvature along the path. Since we know we close the path, if
 	 * it's a simple, convex polygon, we'll have a total curvature of 2π.
 	 */
-	protected var totalCurvature: Double = 0.toDouble()
+	private var totalCurvature: Double = 0.toDouble()
 	
 	/**
 	 * All corners must have the same sign.
 	 */
-	protected var sign: Int = 0
+	private var sign: Int = 0
 	
 	/**
 	 * The flag to indicate if we currently believe this polygon to be simple and
 	 * convex.
 	 */
-	protected var isConvexSoFar: Boolean = false
+	private var isConvexSoFar: Boolean = false
 	
 	/**
 	 * The flag to indicate if we are on our first segment (move-to). If we have
 	 * multiple move-to's, then we need to tesselate.
 	 */
-	protected var firstContour: Boolean = false
+	private var firstContour: Boolean = false
 	
 	/**
 	 * Keep the winding rule for when we pass the information off to the
 	 * tesselator.
 	 */
-	protected var windingRule: Int = 0
+	private var windingRule: Int = 0
 	
 	override fun setGLContext(context: GL) {
 		simpleFallback.setGLContext(context)
@@ -144,7 +144,7 @@ class SimpleOrTesselatingVisitor(protected var simpleFallback: PathVisitor, prot
 	 * Returns true if the corner is correct, using the new vertex and the buffer
 	 * of previous vertices. This always updates the buffer of previous vertices.
 	 */
-	protected fun isValidCorner(vertex: FloatArray): Boolean {
+	private fun isValidCorner(vertex: FloatArray): Boolean {
 		if (numberOfPreviousVertices >= 2) {
 			val diff1 = (previousVertices[2] - previousVertices[0]).toDouble()
 			val diff2 = (previousVertices[3] - previousVertices[1]).toDouble()
@@ -190,7 +190,7 @@ class SimpleOrTesselatingVisitor(protected var simpleFallback: PathVisitor, prot
 		return true
 	}
 	
-	protected fun sign(value: Double): Int {
+	private fun sign(value: Double): Int {
 		if (value > 1e-8) {
 			return 1
 		} else if (value < -1e-8) {
@@ -251,14 +251,14 @@ class SimpleOrTesselatingVisitor(protected var simpleFallback: PathVisitor, prot
 	 * the tesselator. This is for when we realized it's not a simple poly after
 	 * we already finished the first path.
 	 */
-	protected fun setUseTesselator(doClose: Boolean) {
+	private fun setUseTesselator(doClose: Boolean) {
 		isConvexSoFar = false
 		
 		tesselatorFallback.beginPoly(windingRule)
 		drawToVisitor(tesselatorFallback, doClose)
 	}
 	
-	protected fun drawToVisitor(visitor: PathVisitor, doClose: Boolean) {
+	private fun drawToVisitor(visitor: PathVisitor, doClose: Boolean) {
 		val buf = vBuffer.buffer
 		buf.flip()
 		

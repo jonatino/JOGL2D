@@ -29,16 +29,12 @@ import java.nio.FloatBuffer
  * constructor uses a global buffer since drawing in OpenGL is not
  * multi-threaded.
  */
-class VertexBuffer protected constructor(buffer: FloatBuffer) {
+class VertexBuffer {
 	
 	var buffer: FloatBuffer
-		protected set
+		private set
 	
-	protected var deviceBufferId: Int = 0
-	
-	init {
-		this.buffer = buffer
-	}
+	private var deviceBufferId: Int = 0
 	
 	/**
 	 * Creates a private buffer. This can be used without fear of clobbering the
@@ -47,7 +43,8 @@ class VertexBuffer protected constructor(buffer: FloatBuffer) {
 	 
 	 * @param capacity The size of the buffer in number of vertices
 	 */
-	constructor(capacity: Int) : this(Buffers.newDirectFloatBuffer(capacity * 2)) {
+	constructor(capacity: Int) {
+		buffer = (Buffers.newDirectFloatBuffer(capacity * 2))
 	}
 	
 	/**
@@ -90,7 +87,7 @@ class VertexBuffer protected constructor(buffer: FloatBuffer) {
 		buffer.put(vertices)
 	}
 	
-	protected fun ensureCapacity(numNewFloats: Int) {
+	private fun ensureCapacity(numNewFloats: Int) {
 		if (buffer.capacity() <= buffer.position() + numNewFloats) {
 			val larger = Buffers.newDirectFloatBuffer(Math.max(buffer.position() * 2, buffer.position() + numNewFloats))
 			deviceBufferId = -deviceBufferId
@@ -135,7 +132,7 @@ class VertexBuffer protected constructor(buffer: FloatBuffer) {
 	}
 	
 	companion object {
-		protected var shared = VertexBuffer(1024)
+		private var shared = VertexBuffer(1024)
 		
 		/**
 		 * Creates a buffer that uses the shared global buffer. This is faster than

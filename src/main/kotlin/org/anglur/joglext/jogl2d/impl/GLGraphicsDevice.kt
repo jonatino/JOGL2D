@@ -22,7 +22,7 @@ import java.awt.GraphicsDevice
 /**
  * Fulfills the contract of a `GraphicsDevice`.
  */
-class GLGraphicsDevice(protected val config: GLGraphicsConfiguration) : GraphicsDevice() {
+class GLGraphicsDevice(private val config: GLGraphicsConfiguration) : GraphicsDevice() {
 	
 	override fun getType(): Int {
 		if (config.target.chosenGLCapabilities.isOnscreen) {

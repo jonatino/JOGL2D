@@ -20,21 +20,18 @@ package org.anglur.joglext.jogl2d.impl.gl2
 import com.jogamp.opengl.*
 import com.jogamp.opengl.glu.gl2.GLUgl2
 import com.jogamp.opengl.util.gl2.GLUT.*
+import org.anglur.joglext.cacheable.CachedIntArray
 import org.anglur.joglext.jogl2d.font.*
 import org.anglur.joglext.jogl2d.impl.AbstractTextDrawer
 import java.text.AttributedCharacterIterator
 
-/**
- * Draws text for the `GLGraphics2D` class.
- */
 class GL2StringDrawer : AbstractTextDrawer() {
 	
 	override fun dispose() {
 	}
 	
-	override fun drawString(iterator: AttributedCharacterIterator, x: Float, y: Float) {
-		drawString(iterator, x.toInt(), y.toInt())
-	}
+	override fun drawString(iterator: AttributedCharacterIterator, x: Float, y: Float) =
+			drawString(iterator, x.toInt(), y.toInt())
 	
 	override fun drawString(iterator: AttributedCharacterIterator, x: Int, y: Int) {
 		val builder = StringBuilder(iterator.endIndex - iterator.beginIndex)
@@ -45,21 +42,20 @@ class GL2StringDrawer : AbstractTextDrawer() {
 		drawString(builder.toString(), x, y)
 	}
 	
-	override fun drawString(string: String, x: Float, y: Float) {
-		drawString(string, x.toInt(), y.toInt())
-	}
+	override fun drawString(string: String, x: Float, y: Float) =
+			drawString(string, x.toInt(), y.toInt())
 	
 	override fun drawString(string: String, x: Int, y: Int) {
 		g2d.glContext.gl.gL2.glRasterPos2d(x.toDouble(), y.toDouble())
 		glutBitmapString(BITMAP_TIMES_ROMAN_10, string)
 	}
 	
-	val swapbytes = IntArray(1)
-	val lsbfirst = IntArray(1)
-	val rowlength = IntArray(1)
-	val skiprows = IntArray(1)
-	val skippixels = IntArray(1)
-	val alignment = IntArray(1)
+	private val swapbytes = CachedIntArray(1)
+	private val lsbfirst = CachedIntArray(1)
+	private val rowlength = CachedIntArray(1)
+	private val skiprows = CachedIntArray(1)
+	private val skippixels = CachedIntArray(1)
+	private val alignment = CachedIntArray(1)
 	
 	fun glutBitmapString(font: Int, string: String) {
 		val gl = GLUgl2.getCurrentGL2()

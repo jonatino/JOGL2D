@@ -32,15 +32,16 @@ import java.awt.BasicStroke
  * useful criteria.
  */
 class FastLineVisitor : SimplePathVisitor() {
-	protected var testMatrix = CachedFloatArray(16)
 	
-	protected var buffer = VertexBuffer.sharedBuffer
+	private var testMatrix = CachedFloatArray(16)
 	
-	protected lateinit var gl: GL2
+	private var buffer = VertexBuffer.sharedBuffer
 	
-	protected lateinit var stroke2: BasicStroke
+	private lateinit var gl: GL2
 	
-	protected var glLineWidth: Float = 0.toFloat()
+	private lateinit var stroke2: BasicStroke
+	
+	private var glLineWidth: Float = 0.toFloat()
 	
 	override fun setGLContext(context: GL) {
 		gl = context.gL2
@@ -144,7 +145,7 @@ class FastLineVisitor : SimplePathVisitor() {
 		drawLine(true)
 	}
 	
-	protected fun drawLine(close: Boolean) {
+	private fun drawLine(close: Boolean) {
 		val buf = buffer.buffer
 		val p = buf.position()
 		buffer.drawBuffer(gl, if (close) GL2.GL_LINE_LOOP else GL2.GL_LINE_STRIP)
@@ -183,4 +184,5 @@ class FastLineVisitor : SimplePathVisitor() {
 		
 		gl.glPopAttrib()
 	}
+	
 }

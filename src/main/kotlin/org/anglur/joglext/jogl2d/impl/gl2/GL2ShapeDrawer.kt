@@ -28,12 +28,13 @@ import java.awt.RenderingHints.Key
 import java.awt.Shape
 
 class GL2ShapeDrawer : AbstractShapeHelper() {
-	protected lateinit var gl: GL2
 	
-	protected var simpleFillVisitor: FillSimpleConvexPolygonVisitor
-	protected var complexFillVisitor: SimpleOrTesselatingVisitor
-	protected var simpleStrokeVisitor: LineDrawingVisitor
-	protected var fastLineVisitor: FastLineVisitor
+	private lateinit var gl: GL2
+	
+	private var simpleFillVisitor: FillSimpleConvexPolygonVisitor
+	private var complexFillVisitor: SimpleOrTesselatingVisitor
+	private var simpleStrokeVisitor: LineDrawingVisitor
+	private var fastLineVisitor: FastLineVisitor
 	
 	init {
 		simpleFillVisitor = FillSimpleConvexPolygonVisitor()
@@ -44,13 +45,13 @@ class GL2ShapeDrawer : AbstractShapeHelper() {
 	
 	override fun setG2D(g2d: GLGraphics2D) {
 		super.setG2D(g2d)
-		val gl = g2d.glContext.getGL()
+		val gl = g2d.glContext.gl
 		simpleFillVisitor.setGLContext(gl)
 		complexFillVisitor.setGLContext(gl)
 		simpleStrokeVisitor.setGLContext(gl)
 		fastLineVisitor.setGLContext(gl)
 		
-		this.gl = gl.getGL2()
+		this.gl = gl.gL2
 	}
 	
 	override fun setHint(key: Key, value: Any?) {
@@ -83,11 +84,6 @@ class GL2ShapeDrawer : AbstractShapeHelper() {
 		fill(stroke.createStrokedShape(shape))
 	}
 	
-	override fun fill(shape: Shape, forceSimple: Boolean) {
-		if (forceSimple) {
-			traceShape(shape, simpleFillVisitor)
-		} else {
-			traceShape(shape, complexFillVisitor)
-		}
-	}
+	override fun fill(shape: Shape, forceSimple: Boolean)
+			= traceShape(shape, if (forceSimple) simpleFillVisitor else complexFillVisitor)
 }

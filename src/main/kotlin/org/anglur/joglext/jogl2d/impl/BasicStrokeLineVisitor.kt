@@ -29,18 +29,18 @@ import java.lang.Math.*
  */
 abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 	
-	protected var lineJoin: Int = 0
-	protected var endCap: Int = 0
-	protected var lineOffset: Float = 0.toFloat()
-	protected var miterLimit: Float = 0.toFloat()
+	private var lineJoin: Int = 0
+	private var endCap: Int = 0
+	private var lineOffset: Float = 0.toFloat()
+	private var miterLimit: Float = 0.toFloat()
 	
-	protected var lastPoint: FloatArray? = null
-	protected var secondLastPoint: FloatArray? = null
-	protected var firstPoint: FloatArray? = null
-	protected var secondPoint: FloatArray? = null
+	private var lastPoint: FloatArray? = null
+	private var secondLastPoint: FloatArray? = null
+	private var firstPoint: FloatArray? = null
+	private var secondPoint: FloatArray? = null
 	
 	protected var vBuffer = VertexBuffer(1024)
-	protected var tmpBuffer = Buffers.newDirectFloatBuffer(1024)
+	private var tmpBuffer = Buffers.newDirectFloatBuffer(1024)
 	
 	override fun setStroke(stroke: BasicStroke) {
 		lineJoin = stroke.lineJoin
@@ -108,7 +108,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		clear()
 	}
 	
-	protected fun clear() {
+	private fun clear() {
 		vBuffer.clear()
 		firstPoint = null
 		lastPoint = null
@@ -117,7 +117,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		secondLastPoint = null
 	}
 	
-	protected fun finishAndDrawLine() {
+	private fun finishAndDrawLine() {
 		if (firstPoint != null && secondPoint != null) {
 			applyEndCap(secondLastPoint!!, lastPoint!!, false)
 			
@@ -160,7 +160,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		lineJoin = originalJoin
 	}
 	
-	protected fun applyCorner(vertex: FloatArray) {
+	private fun applyCorner(vertex: FloatArray) {
 		when (lineJoin) {
 			BasicStroke.JOIN_BEVEL -> drawCornerBevel(secondLastPoint!!, lastPoint!!, vertex)
 			
@@ -172,7 +172,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		}
 	}
 	
-	protected fun drawCornerRound(secondLastPoint: FloatArray, lastPoint: FloatArray, point: FloatArray) {
+	private fun drawCornerRound(secondLastPoint: FloatArray, lastPoint: FloatArray, point: FloatArray) {
 		val offset1 = lineOffset(secondLastPoint, lastPoint)
 		val offset2 = lineOffset(lastPoint, point)
 		
@@ -233,7 +233,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		}
 	}
 	
-	protected fun drawCornerBevel(secondLastPoint: FloatArray, lastPoint: FloatArray, point: FloatArray) {
+	private fun drawCornerBevel(secondLastPoint: FloatArray, lastPoint: FloatArray, point: FloatArray) {
 		val offset1 = lineOffset(secondLastPoint, lastPoint)
 		val offset2 = lineOffset(lastPoint, point)
 		
@@ -269,7 +269,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		}
 	}
 	
-	protected fun drawCornerMiter(secondLastPoint: FloatArray, lastPoint: FloatArray, point: FloatArray) {
+	private fun drawCornerMiter(secondLastPoint: FloatArray, lastPoint: FloatArray, point: FloatArray) {
 		val offset1 = lineOffset(secondLastPoint, lastPoint)
 		val offset2 = lineOffset(lastPoint, point)
 		
@@ -300,38 +300,38 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		}
 	}
 	
-	protected fun distance(pt1: FloatArray, pt2: FloatArray): Float {
+	private fun distance(pt1: FloatArray, pt2: FloatArray): Float {
 		val diffX = (pt1[0] - pt2[0]).toDouble()
 		val diffY = (pt1[1] - pt2[1]).toDouble()
 		val distSq = diffX * diffX + diffY * diffY
 		return sqrt(distSq).toFloat()
 	}
 	
-	protected fun addScaled(pt: FloatArray, v: FloatArray, alpha: Float): FloatArray {
+	private fun addScaled(pt: FloatArray, v: FloatArray, alpha: Float): FloatArray {
 		return floatArrayOf(pt[0] + v[0] * alpha, pt[1] + v[1] * alpha)
 	}
 	
-	protected fun normalize(v: FloatArray) {
+	private fun normalize(v: FloatArray) {
 		val norm = sqrt((v[0] * v[0] + v[1] * v[1]).toDouble()).toFloat()
 		v[0] /= norm
 		v[1] /= norm
 	}
 	
-	protected fun subtract(pt1: FloatArray, pt2: FloatArray): FloatArray {
+	private fun subtract(pt1: FloatArray, pt2: FloatArray): FloatArray {
 		return floatArrayOf(pt1[0] - pt2[0], pt1[1] - pt2[1])
 	}
 	
-	protected fun add(pt1: FloatArray, pt2: FloatArray): FloatArray {
+	private fun add(pt1: FloatArray, pt2: FloatArray): FloatArray {
 		return floatArrayOf(pt2[0] + pt1[0], pt2[1] + pt1[1])
 	}
 	
-	protected fun getIntersectionAlpha(pt1: FloatArray, v1: FloatArray, pt2: FloatArray, v2: FloatArray): Float {
+	private fun getIntersectionAlpha(pt1: FloatArray, v1: FloatArray, pt2: FloatArray, v2: FloatArray): Float {
 		var t = (pt2[0] - pt1[0]) * v2[1] - (pt2[1] - pt1[1]) * v2[0]
 		t /= v1[0] * v2[1] - v1[1] * v2[0]
 		return t
 	}
 	
-	protected fun lineOffset(linePoint1: FloatArray, linePoint2: FloatArray): FloatArray {
+	private fun lineOffset(linePoint1: FloatArray, linePoint2: FloatArray): FloatArray {
 		val vec = CachedFloatArray(2)
 		vec[0] = linePoint2[0] - linePoint1[0]
 		vec[1] = linePoint2[1] - linePoint1[1]
@@ -346,7 +346,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		return offset
 	}
 	
-	protected fun lineCorners(linePoint1: FloatArray, linePoint2: FloatArray, vertex: FloatArray, offset: Float): FloatArray {
+	private fun lineCorners(linePoint1: FloatArray, linePoint2: FloatArray, vertex: FloatArray, offset: Float): FloatArray {
 		val translated = CachedFloatArray(2)
 		translated[0] = linePoint2[0] - linePoint1[0]
 		translated[1] = linePoint2[1] - linePoint1[1]
@@ -424,7 +424,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 	 * `point`.
 	 *
 	 */
-	protected fun getMiterIntersections(secondLastPoint: FloatArray, lastPoint: FloatArray, point: FloatArray): FloatArray {
+	private fun getMiterIntersections(secondLastPoint: FloatArray, lastPoint: FloatArray, point: FloatArray): FloatArray {
 		val o1 = lineCorners(secondLastPoint, lastPoint, lastPoint, lineOffset)
 		val o2 = lineCorners(lastPoint, point, lastPoint, lineOffset)
 		
@@ -457,7 +457,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		return intersections
 	}
 	
-	protected fun applyEndCap(point1: FloatArray, point2: FloatArray, first: Boolean) {
+	private fun applyEndCap(point1: FloatArray, point2: FloatArray, first: Boolean) {
 		when (endCap) {
 			BasicStroke.CAP_BUTT -> drawCapButt(point1, point2, first)
 			
@@ -467,7 +467,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		}
 	}
 	
-	protected fun drawCapButt(point1: FloatArray, point2: FloatArray, first: Boolean) {
+	private fun drawCapButt(point1: FloatArray, point2: FloatArray, first: Boolean) {
 		val offset = lineOffset(point1, point2)
 		
 		val pt = if (first) point1 else point2
@@ -477,7 +477,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		addVertex(cornerPt[0], cornerPt[1])
 	}
 	
-	protected fun drawCapSquare(point1: FloatArray, point2: FloatArray, first: Boolean) {
+	private fun drawCapSquare(point1: FloatArray, point2: FloatArray, first: Boolean) {
 		val offset = lineOffset(point1, point2)
 		
 		val offsetRotated: FloatArray
@@ -496,7 +496,7 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		addVertex(cornerPt[0], cornerPt[1])
 	}
 	
-	protected fun drawCapRound(point1: FloatArray, point2: FloatArray, first: Boolean) {
+	private fun drawCapRound(point1: FloatArray, point2: FloatArray, first: Boolean) {
 		/*
 	 * Instead of doing a triangle-fan around the cap, we're going to jump back
      * and forth from the tip toward the body of the line.
@@ -549,15 +549,15 @@ abstract class BasicStrokeLineVisitor : SimplePathVisitor() {
 		}
 	}
 	
-	protected fun addVertex(x: Float, y: Float) {
+	private fun addVertex(x: Float, y: Float) {
 		vBuffer.addVertex(x, y)
 	}
 	
 	protected abstract fun drawBuffer()
 	
 	companion object {
-		protected var THETA_STEP = 0.5f
-		protected var COS_STEP = cos(THETA_STEP.toDouble()).toFloat()
-		protected var SIN_STEP = sin(THETA_STEP.toDouble()).toFloat()
+		private var THETA_STEP = 0.5f
+		private var COS_STEP = cos(THETA_STEP.toDouble()).toFloat()
+		private var SIN_STEP = sin(THETA_STEP.toDouble()).toFloat()
 	}
 }

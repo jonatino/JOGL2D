@@ -23,15 +23,18 @@ import java.awt.geom.AffineTransform
 import java.util.*
 
 abstract class AbstractMatrixHelper : GLG2DTransformHelper {
+	
 	protected lateinit var g2d: GLGraphics2D
 	
 	protected var stack: Deque<AffineTransform> = ArrayDeque()
+	
+	private val EMPTY = AffineTransform()
 	
 	override fun setG2D(g2d: GLGraphics2D) {
 		this.g2d = g2d
 		
 		stack.clear()
-		stack.push(AffineTransform())
+		stack.push(EMPTY)
 	}
 	
 	override fun push(newG2d: GLGraphics2D) {
@@ -101,7 +104,7 @@ abstract class AbstractMatrixHelper : GLG2DTransformHelper {
 	 * Returns the `AffineTransform` at the top of the stack, *not* a
 	 * copy.
 	 */
-	protected val transform0: AffineTransform
+	private val transform0: AffineTransform
 		get() = stack.peek()
 	
 	/**
@@ -109,4 +112,5 @@ abstract class AbstractMatrixHelper : GLG2DTransformHelper {
 	 * card.
 	 */
 	protected abstract fun flushTransformToOpenGL()
+	
 }
