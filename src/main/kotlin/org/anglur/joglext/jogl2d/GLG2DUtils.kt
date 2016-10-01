@@ -38,13 +38,8 @@ object GLG2DUtils {
 		return canvasHeight
 	}
 	
-	fun ensureIsGLBuffer(gl: GL, bufferId: Int): Int {
-		if (gl.glIsBuffer(bufferId)) {
-			return bufferId
-		} else {
-			return genBufferId(gl)
-		}
-	}
+	fun ensureIsGLBuffer(gl: GL, bufferId: Int) =
+			if (gl.glIsBuffer(bufferId)) bufferId else genBufferId(gl)
 	
 	private val ids = CachedIntArray(1)
 	
@@ -52,4 +47,5 @@ object GLG2DUtils {
 		gl.glGenBuffers(1, ids, 0)
 		return ids[0]
 	}
+	
 }

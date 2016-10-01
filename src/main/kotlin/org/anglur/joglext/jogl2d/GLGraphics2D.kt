@@ -226,7 +226,7 @@ class GLGraphics2D : Graphics2D(), Cloneable {
 		}
 	}
 	
-	override fun getRenderingHints() = hints.clone() as RenderingHints
+	override fun getRenderingHints() = hints
 	
 	override fun translate(x: Int, y: Int) = matrixHelper.translate(x, y)
 	

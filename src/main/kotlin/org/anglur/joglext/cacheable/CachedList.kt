@@ -17,7 +17,7 @@
 package org.anglur.joglext.cacheable
 
 @Suppress("UNCHECKED_CAST")
-open class CachedList<out E>(val minIndex: Int, val capacity: Int) {
+open class CachedList<out E>(val minIndex: Int, val capacity: Int) : Iterable<E> {
 	
 	private var arr = arrayOfNulls<Any>(capacity)
 	
@@ -103,7 +103,7 @@ open class CachedList<out E>(val minIndex: Int, val capacity: Int) {
 		throw IllegalStateException("Out of indices!")
 	}
 	
-	operator fun iterator(): Iterator<E> {
+	override operator fun iterator(): Iterator<E> {
 		iterator.pointer = minIndex
 		return iterator
 	}
