@@ -124,8 +124,10 @@ class GLGraphics2D : Graphics2D(), Cloneable {
 		setDefaultState()
 	}
 	
-	private val defaultFont = Font("Arial", Font.PLAIN, 12)
-	private val defaultStroke = BasicStroke()
+	companion object {
+		private val defaultFont = Font("Arial", Font.PLAIN, 12)
+		private val defaultStroke = BasicStroke()
+	}
 	
 	private fun setDefaultState() {
 		background = Color.black
