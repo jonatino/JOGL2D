@@ -13,11 +13,21 @@ JOGL2D is a lightweight, resource friendly, stripped down version of brandonbork
 # How Can I Use JOGL2D?
 Simply add JOGL2D to your JOGL application using your favourite dependancy management systems.
 
-Gradle:
-TODO
+### Gradle
+```groovy
+compile 'org.anglur:joglext:1.0.1'
+```
 
-Maven:
-TODO
+### Maven
+```xml
+<dependency>
+  <groupId>org.anglur</groupId>
+  <artifactId>joglext</artifactId>
+  <version>1.0.1</version>
+</dependency>
+```
+
+---
 
 
 Once added, it is very easy to implement. Start off by making a `GLEventListener`
