@@ -15,7 +15,7 @@ Simply add JOGL2D to your JOGL application using your favourite dependancy manag
 
 ### Gradle
 ```groovy
-compile 'org.anglur:joglext:1.0.1'
+compile 'org.anglur:joglext:1.0.2'
 ```
 
 ### Maven
@@ -23,7 +23,7 @@ compile 'org.anglur:joglext:1.0.1'
 <dependency>
   <groupId>org.anglur</groupId>
   <artifactId>joglext</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 
