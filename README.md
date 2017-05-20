@@ -2,7 +2,7 @@
 _Zero-overhead 2D rendering library for JOGL_
 
 [![Build Status](https://travis-ci.org/Jonatino/JOGL2D.svg?branch=master)](https://travis-ci.org/Jonatino/JOGL2D)
-[![license](https://img.shields.io/github/license/Jonatino/JOGL2D.svg)](Apache License 2.0)
+![license](https://img.shields.io/github/license/Jonatino/JOGL2D.svg)
 
 This library is licensed under Apache License 2.0.
 
