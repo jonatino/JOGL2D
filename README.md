@@ -32,7 +32,7 @@ compile 'org.anglur:joglext:1.0.1'
 
 Once added, it is very easy to implement. Start off by making a `GLEventListener`
 ```kotlin
-object CharlatanoOverlay : GLEventListener {
+object OpenGLOverlay : GLEventListener {
     
     private val WINDOW_WIDTH = 500
     private val WINDOW_HEIGHT = 500
