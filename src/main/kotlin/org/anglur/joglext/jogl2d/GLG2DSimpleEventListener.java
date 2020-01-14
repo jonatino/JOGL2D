@@ -24,11 +24,6 @@ import javax.swing.*;
 /**
  * Wraps a {@code JComponent} and paints it using a {@code GLGraphics2D}. This
  * object will paint the entire component fully for each frame.
- *
- * <p>
- * {@link GLG2DHeadlessListener} may also be used to listen for reshapes and
- * update the size and layout of the painted Swing component.
- * </p>
  */
 public class GLG2DSimpleEventListener implements GLEventListener
 {
