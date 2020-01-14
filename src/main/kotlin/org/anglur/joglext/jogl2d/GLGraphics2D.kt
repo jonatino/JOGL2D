@@ -140,6 +140,10 @@ class GLGraphics2D : Graphics2D(), Cloneable {
 		graphicsConfig = GLGraphicsConfiguration.setDrawable(glDrawable)
 	}
 	
+	fun postPaint() {
+		// could glFlush here, but not necessary
+	}
+	
 	fun glDispose() {
 		for (helper in helpers) {
 			helper.dispose()

@@ -30,7 +30,7 @@ object CachedIntArray {
 	 *
 	 * @param size The desired amount of bytes of the FloatArray.
 	 */
-	fun cached(size: Int) = map.get().getOrPut(size, { IntArray(size) })!!
+	private fun cached(size: Int) = map.get().getOrPut(size, { IntArray(size) })!!
 	
 	operator fun invoke(size: Int) = cached(size)
 	

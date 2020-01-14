@@ -17,7 +17,7 @@
 package org.anglur.joglext.cacheable
 
 @Suppress("UNCHECKED_CAST")
-open class CachedList<out E>(val minIndex: Int, val capacity: Int) : Iterable<E> {
+open class CachedList<out E>(private val minIndex: Int, private val capacity: Int) : Iterable<E> {
 	
 	private var arr = arrayOfNulls<Any>(capacity)
 	
@@ -57,7 +57,7 @@ open class CachedList<out E>(val minIndex: Int, val capacity: Int) : Iterable<E>
 	
 	fun remove(element: @UnsafeVariance E) {
 		for (i in minIndex..highest) {
-			if (element!!.equals(arr[i])) {
+			if (element!! == arr[i]) {
 				set(i, null)
 				return
 			}
@@ -66,7 +66,7 @@ open class CachedList<out E>(val minIndex: Int, val capacity: Int) : Iterable<E>
 	
 	operator fun contains(element: @UnsafeVariance E): Boolean {
 		for (e in iterator()) {
-			if (element!!.equals(e)) {
+			if (element!! == e) {
 				return true
 			}
 		}
@@ -74,7 +74,7 @@ open class CachedList<out E>(val minIndex: Int, val capacity: Int) : Iterable<E>
 		return false
 	}
 	
-	inline fun forEach(action: (E) -> Unit): Unit {
+	inline fun forEach(action: (E) -> Unit) {
 		for (e in iterator()) {
 			if (e != null)
 				action(e)
@@ -82,7 +82,7 @@ open class CachedList<out E>(val minIndex: Int, val capacity: Int) : Iterable<E>
 	}
 	
 	open fun clear() {
-		for (i in minIndex..arr.size - 1)
+		for (i in minIndex until arr.size)
 			arr[i] = null
 		size = 0
 		dirty = true
@@ -94,8 +94,8 @@ open class CachedList<out E>(val minIndex: Int, val capacity: Int) : Iterable<E>
 	
 	fun clean() = apply { dirty = false }
 	
-	fun nextIndex(): Int {
-		for (i in minIndex..arr.size - 1) {
+	private fun nextIndex(): Int {
+		for (i in minIndex until arr.size) {
 			if (null == arr[i]) {
 				return i
 			}
